@@ -1,0 +1,26 @@
+{
+  "name": "lacuna/scanner-client",
+  "type": "library",
+  "description": "Client lib for Scanner",
+  "keywords": [
+    "lacuna",
+    "client lib",
+    "rest pki",
+    "signature"
+  ],
+  "authors": [
+    {
+      "name": "Ismael Medeiros",
+      "email": "IsmaelM@lacunasoftware.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "guzzlehttp/guzzle": "^6.5.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lacuna\\Scanner\\": "src/"
+    }
+  }
+}
