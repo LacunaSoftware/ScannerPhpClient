@@ -4,10 +4,10 @@
 namespace Lacuna\Scanner;
 
 /**
- * Class AbstractScannerOptions
+ * Class ScannerOptions
  * @package Lacuna\Scanner
  */
-abstract class AbstractScannerOptions
+class ScannerOptions
 {
     public $endpoint;
     public $apiKey;

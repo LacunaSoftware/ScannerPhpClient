@@ -4,17 +4,17 @@
 namespace Lacuna\Scanner;
 
 /**
- * Class AbstractScannerClient
+ * Class ScannerClient
  * @package Lacuna\Scanner
  */
-abstract class AbstractScannerClient implements ScannerServiceInterface
+class ScannerClient implements ScannerServiceInterface
 {
     protected $httpClient;
     private $options;
 
     /**
-     * AbstractScannerClient constructor.
-     * @param AbstractScannerOptions $options
+     * ScannerClient constructor.
+     * @param ScannerOptions $options
      */
     public function __construct($options)
     {
@@ -24,10 +24,10 @@ abstract class AbstractScannerClient implements ScannerServiceInterface
     // region Scan Sessions
 
     /**
-     * @param $returnUrl
+     * @param string $returnUrl
      * @param bool $multifile
-     * @param null $metadataPresets
-     * @param null $subscriptionId
+     * @param MetadataPresets $metadataPresets
+     * @param string $subscriptionId
      * @return CreateScanSessionResponse
      * @throws RestErrorException
      * @throws RestUnreachableException
@@ -51,7 +51,7 @@ abstract class AbstractScannerClient implements ScannerServiceInterface
     }
 
     /**
-     * @param $scanSessionId
+     * @param string $scanSessionId
      * @return ScanSession
      * @throws RestErrorException
      * @throws RestUnreachableException
@@ -69,7 +69,7 @@ abstract class AbstractScannerClient implements ScannerServiceInterface
     // region Documents
 
     /**
-     * @param $documentId
+     * @param string $documentId
      * @return Document
      * @throws RestErrorException
      * @throws RestUnreachableException
@@ -83,8 +83,8 @@ abstract class AbstractScannerClient implements ScannerServiceInterface
     }
 
     /**
-     * @param $documentId
-     * @param $path
+     * @param string $documentId
+     * @param string $path
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
@@ -96,7 +96,7 @@ abstract class AbstractScannerClient implements ScannerServiceInterface
     }
 
     /**
-     * @param $documentId
+     * @param string $documentId
      * @return mixed
      * @throws RestErrorException
      * @throws RestUnreachableException
@@ -110,8 +110,8 @@ abstract class AbstractScannerClient implements ScannerServiceInterface
     }
 
     /**
-     * @param $documentId
-     * @param $path
+     * @param string $documentId
+     * @param string $path
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
@@ -123,7 +123,7 @@ abstract class AbstractScannerClient implements ScannerServiceInterface
     }
 
     /**
-     * @param $documentId
+     * @param string $documentId
      * @return mixed
      * @throws RestErrorException
      * @throws RestUnreachableException

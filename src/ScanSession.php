@@ -14,13 +14,13 @@ class ScanSession
     public $documents;
 
     /**
-     * @internal
+     * @param ScannerClient $client
+     * @param $model
+     *@internal
      *
      * ScanSession constructor.
-     * @param AbstractScannerClient $client
-     * @param $model
      */
-    function __construct(AbstractScannerClient $client, $model)
+    function __construct(ScannerClient $client, $model)
     {
         $this->client = $client;
         $this->id = $model->id;

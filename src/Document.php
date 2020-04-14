@@ -20,14 +20,14 @@ class Document
 
     /**
      * Document constructor.
-     * @param AbstractScannerClient $client
+     * @param ScannerClient $client
      * @param $model
      */
-    function __construct(AbstractScannerClient $client, $model)
+    function __construct(ScannerClient $client, $model)
     {
         $this->client = $client;
         $this->id = $model->id;
-        $this->hash = new HashAlgorithmAndValue($model->hash);
+        $this->hash = new DigestAlgorithmAndValue($model->hash);
         $this->fileName = $model->fileName;
         $this->contentLength = $model->contentLength;
         $this->contentType = $model->contentType;
