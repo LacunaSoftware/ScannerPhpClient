@@ -9,7 +9,7 @@ namespace Lacuna\Scanner;
  */
 class ScannerClient implements ScannerServiceInterface
 {
-    protected $httpClient;
+    protected $_restClient;
     private $options;
 
     /**
@@ -47,7 +47,7 @@ class ScannerClient implements ScannerServiceInterface
         $client = $this->_getRestClient($customHeaders);
 
         $response = $client->post('/api/scan-sessions', $request);
-        return new CreateScanSessionResponse($response->body);
+        return new CreateScanSessionResponse($response->getBodyAsJson());
     }
 
     /**
@@ -61,7 +61,7 @@ class ScannerClient implements ScannerServiceInterface
     {
         $client = $this->_getRestClient();
         $response = $client->get("/api/scan-sessions/$scanSessionId");
-        return new ScanSession($this, $response->body);
+        return new ScanSession($this, $response->getBodyAsJson());
     }
 
     // endregion
@@ -79,20 +79,35 @@ class ScannerClient implements ScannerServiceInterface
     {
         $client = $this->_getRestClient();
         $response = $client->get("/api/documents/$documentId");
-        return new Document($this, $response->body);
+        return new Document($this, $response->getBodyAsJson());
     }
 
     /**
-     * @param string $documentId
-     * @param string $path
+     * @param $documentId
+     * @return string
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
      */
-    public function writeDocumentToFile($documentId, $path)
+    public function getDocumentDownloadLink($documentId)
     {
         $client = $this->_getRestClient();
-        $client->downloadToFile("/api/documents/$documentId/file-link", $path);
+        $response = $client->get("/api/documents/$documentId/file-link");
+        return $this->processLink((string) $response->body);
+    }
+
+    /**
+     * @param $documentId
+     * @return mixed
+     * @throws RestErrorException
+     * @throws RestUnreachableException
+     * @throws ScannerException
+     */
+    public function openReadDocument($documentId)
+    {
+        $client = $this->_getRestClient();
+        $downloadLink = $this->getDocumentDownloadLink($documentId);
+        return $client->openStream($downloadLink);
     }
 
     /**
@@ -104,36 +119,49 @@ class ScannerClient implements ScannerServiceInterface
      */
     public function getDocumentContent($documentId)
     {
-        $client = $this->_getRestClient();
-        $response = $client->downloadContent("/api/documents/$documentId/file-content");
-        return $response->body;
+        $stream = $this->openReadDocument($documentId);
+        return $stream->getContents();
     }
 
     /**
-     * @param string $documentId
-     * @param string $path
+     * @param $documentId
+     * @return string
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
      */
-    public function writeDocumentMetadataToFile($documentId, $path)
+    public function getDocumentMetadataFileDownloadLink($documentId)
     {
         $client = $this->_getRestClient();
-        $client->downloadToFile("/api/documents/$documentId/metadata-file-link", $path);
+        $response = $client->get("/api/documents/$documentId/metadata-file-link");
+        return $this->processLink((string) $response->body);
     }
 
     /**
-     * @param string $documentId
+     * @param $documentId
      * @return mixed
+     * @throws RestErrorException
+     * @throws RestUnreachableException
+     * @throws ScannerException
+     */
+    public function openReadDocumentMetadataFile($documentId)
+    {
+        $client = $this->_getRestClient();
+        $downloadLink = $this->getDocumentMetadataFileDownloadLink($documentId);
+        return $client->openStream($downloadLink);
+    }
+
+    /**
+     * @param $documentId
+     * @return false|string
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
      */
     public function getDocumentMetadataFileContent($documentId)
     {
-        $client = $this->_getRestClient();
-        $response = $client->downloadContent("/api/documents/$documentId/metadata-content");
-        return $response->body;
+        $stream = $this->openReadDocumentMetadataFile($documentId);
+        return $stream->getContents();
     }
 
     // endregion
@@ -161,5 +189,21 @@ class ScannerClient implements ScannerServiceInterface
             $this->_restClient->customRequestHeaders = $customRequestHeaders;
         }
         return $this->_restClient;
+    }
+
+    /**
+     * @param $url string
+     * @return string
+     */
+    private function processLink($url)
+    {
+        $trim = trim($url);
+        if ($trim[0] == '"') {
+            $trim = substr($trim, 1);
+        }
+        if ($trim[strlen($trim)-1] == '"') {
+            $trim = substr($trim, 0, strlen($trim) - 1);
+        }
+        return $trim;
     }
 }

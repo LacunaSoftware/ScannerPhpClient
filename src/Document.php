@@ -27,12 +27,19 @@ class Document
     {
         $this->client = $client;
         $this->id = $model->id;
-        $this->hash = new DigestAlgorithmAndValue($model->hash);
         $this->fileName = $model->fileName;
         $this->contentLength = $model->contentLength;
         $this->contentType = $model->contentType;
-        $this->descriptiveMetadata = $model->descriptiveMetadata;
-        $this->administrativeMetadata = $model->administrativeMetadata;
+
+        if (isset($model->hash)) {
+            $this->hash = new DigestAlgorithmAndValue($model->hash);
+        }
+        if (isset($model->descriptiveMetadata)) {
+            $this->descriptiveMetadata = new DescriptiveMetadata($model->descriptiveMetadata);
+        }
+        if (isset($model->administrativeMetadata)) {
+            $this->administrativeMetadata = new AdministrativeMetadata($model->administrativeMetadata);
+        }
     }
 
     /**

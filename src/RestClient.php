@@ -80,10 +80,11 @@ class RestClient
 
     /**
      * @param $url
+     * @param bool $jsonResponse
      * @return HttpResponse
-     * @throws ScannerException
      * @throws RestErrorException
      * @throws RestUnreachableException
+     * @throws ScannerException
      */
     public function get($url)
     {
@@ -148,15 +149,13 @@ class RestClient
     }
 
     /**
-     * @internal
-     *
      * @param $url
-     * @return mixed
+     * @return \Psr\Http\Message\StreamInterface
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
      */
-    public function downloadContent($url)
+    public function openStream($url)
     {
         $verb = 'GET';
         $client = $this->_getClient();
@@ -167,37 +166,7 @@ class RestClient
             throw new RestUnreachableException($verb, $url, $ex);
         }
         $this->_checkResponse($verb, $url, $httpResponse);
-        return HttpResponse::getInstance($httpResponse);
-    }
-
-    /**
-     * @internal
-     *
-     * @param $url
-     * @param $path
-     * @throws RestErrorException
-     * @throws RestUnreachableException
-     * @throws ScannerException
-     */
-    public function downloadToFile($url, $path)
-    {
-        $handle = fopen($path, 'wb');
-
-        try {
-
-            $verb = 'GET';
-            $client = $this->_getClient();
-            $httpResponse = null;
-            try {
-                $httpResponse = $client->get($url, ['sink' => $handle]);
-            } catch (TransferException $ex) {
-                throw new RestUnreachableException($verb, $url, $ex);
-            }
-            $this->_checkResponse($verb, $url, $httpResponse);
-
-        } finally {
-            fclose($handle);
-        }
+        return $httpResponse->getBody();
     }
 
     /**

@@ -52,7 +52,7 @@ class HttpResponse
     public static function getInstance($response)
     {
         return new HttpResponse(
-            Util::decodeJson($response->getBody()),
+            $response->getBody(),
             $response->getStatusCode(),
             $response->getHeaders()
         );
@@ -65,6 +65,12 @@ class HttpResponse
     {
         return $this->_body;
     }
+
+    public function getBodyAsJson()
+    {
+        return Util::decodeJson($this->body);
+    }
+
 
     /**
      * @param mixed $body

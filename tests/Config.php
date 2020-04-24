@@ -13,6 +13,7 @@ class Config
     public $scanSessionIdCancelled;
     public $scanSessionIdWithMultifile;
     public $scanSessionIdWithoutMultifile;
+    public $documentId;
 
     public static function getInstance()
     {
@@ -32,6 +33,7 @@ class Config
             self::$instance->scanSessionIdCancelled = $config->scanSessionIdCancelled;
             self::$instance->scanSessionIdWithMultifile = $config->scanSessionIdWithMultifile;
             self::$instance->scanSessionIdWithoutMultifile = $config->scanSessionIdWithoutMultifile;
+            self::$instance->documentId = $config->documentId;
         }
         return self::$instance;
     }
