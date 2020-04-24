@@ -3,6 +3,8 @@
 
 namespace Lacuna\Scanner;
 
+use Exception;
+
 /**
  * Class RestException
  * @package Lacuna\Scanner
@@ -10,7 +12,7 @@ namespace Lacuna\Scanner;
  * @property $verb string
  * @property $url string
  */
-class RestException extends \Exception
+class RestException extends Exception
 {
     /**
      * @private
@@ -30,13 +32,13 @@ class RestException extends \Exception
      * @param $message
      * @param $verb
      * @param $url
-     * @param \Exception|null $previous
+     * @param Exception|null $previous
      */
     public function __construct(
         $message,
         $verb,
         $url,
-        \Exception $previous = null
+        Exception $previous = null
     ) {
         parent::__construct($message, 0, $previous);
         $this->_verb = $verb;

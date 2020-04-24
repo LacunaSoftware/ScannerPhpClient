@@ -3,9 +3,19 @@
 
 namespace Lacuna\Scanner;
 
+use Psr\Http\Message\StreamInterface;
+
 /**
  * Class Document
  * @package Lacuna\Scanner
+ *
+ * @property string $id
+ * @property DigestAlgorithmAndValue $hash
+ * @property string $fileName
+ * @property int $contentLength
+ * @property string $contentType
+ * @property DescriptiveMetadata $descriptiveMetadata
+ * @property AdministrativeMetadata $administrativeMetadata
  */
 class Document
 {
@@ -43,22 +53,34 @@ class Document
     }
 
     /**
-     * @param $path
+     * @return string
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
      */
-    public function writeToFile($path) {
-        $this->client->writeDocumentToFile($this->id, $path);
+    public function getDownloadLink()
+    {
+        return $this->client->getDocumentDownloadLink($this->id);
     }
 
     /**
-     * @return mixed
+     * @return StreamInterface
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
      */
-    public function getContentRaw() {
+    public function openRead()
+    {
+        return $this->client->openReadDocument($this->id);
+    }
+
+    /**
+     * @return string
+     * @throws RestErrorException
+     * @throws RestUnreachableException
+     * @throws ScannerException
+     */
+    public function getContent() {
         return $this->client->getDocumentContent($this->id);
     }
 
@@ -68,28 +90,20 @@ class Document
      * @throws RestUnreachableException
      * @throws ScannerException
      */
-    public function getContentBase64() {
-        return base64_encode($this->getContentRaw());
+    public function getMetadataFileDownloadLink()
+    {
+        return $this->client->getDocumentMetadataFileDownloadLink($this->id);
     }
 
     /**
-     * @param $path
+     * @return StreamInterface
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
      */
-    public function writeMetadataToFile($path) {
-        $this->client->writeDocumentMetadataToFile($this->id, $path);
-    }
-
-    /**
-     * @return mixed
-     * @throws RestErrorException
-     * @throws RestUnreachableException
-     * @throws ScannerException
-     */
-    public function getMetadataFileContentRaw() {
-        return $this->client->getDocumentMetadataFileContent($this->id);
+    public function openReadMetadataFile()
+    {
+        return $this->client->openReadDocumentMetadataFile($this->id);
     }
 
     /**
@@ -98,8 +112,8 @@ class Document
      * @throws RestUnreachableException
      * @throws ScannerException
      */
-    public function getMetadataFileContentBase64() {
-        return base64_encode($this->getMetadataFileContentRaw());
+    public function getMetadataFileContent()
+    {
+        return $this->client->getDocumentMetadataFileContent($this->id);
     }
-
 }

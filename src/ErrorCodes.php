@@ -3,7 +3,10 @@
 
 namespace Lacuna\Scanner;
 
-
+/**
+ * Class ErrorCodes
+ * @package Lacuna\Scanner
+ */
 class ErrorCodes
 {
     const UNKNOWN = 'Unknown';

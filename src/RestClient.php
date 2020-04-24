@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use UnexpectedValueException;
 
 /**
@@ -80,7 +81,6 @@ class RestClient
 
     /**
      * @param $url
-     * @param bool $jsonResponse
      * @return HttpResponse
      * @throws RestErrorException
      * @throws RestUnreachableException
@@ -150,7 +150,7 @@ class RestClient
 
     /**
      * @param $url
-     * @return \Psr\Http\Message\StreamInterface
+     * @return StreamInterface
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException

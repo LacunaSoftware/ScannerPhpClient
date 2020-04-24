@@ -3,8 +3,18 @@
 
 namespace Lacuna\Scanner;
 
-
-
+/**
+ * Class AdministrativeMetadata
+ * @package Lacuna\Scanner
+ *
+ * @property bool $scannedByDomesticGovernment
+ * @property string $scanningPersonName
+ * @property string $scanningPersonCpf
+ * @property string $scanningEntityName
+ * @property string $scanningEntityCnpj
+ * @property string $dateScanned
+ * @property string $locationScanned
+ */
 class AdministrativeMetadata
 {
     public $scannedByDomesticGovernment;

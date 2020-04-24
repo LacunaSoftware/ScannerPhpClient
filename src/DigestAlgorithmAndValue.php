@@ -6,6 +6,10 @@ namespace Lacuna\Scanner;
 /**
  * Class DigestAlgorithmAndValue
  * @package Lacuna\Scanner
+ *
+ * @property DigestAlgorithm $algorithm
+ * @property string $value
+ * @property string $hexValue
  */
 class DigestAlgorithmAndValue
 {

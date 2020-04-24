@@ -13,5 +13,4 @@ class ScannerOptions
     public $apiKey;
     public $usePhpCAInfo;
     public $caInfoPath;
-//    public $timeout;
 }

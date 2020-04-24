@@ -3,7 +3,21 @@
 
 namespace Lacuna\Scanner;
 
-
+/**
+ * Class DescriptiveMetadata
+ * @package Lacuna\Scanner
+ *
+ * @property string $title
+ * @property array $keywords
+ * @property string $creator
+ * @property string $dateCreated
+ * @property string $locationCreated
+ * @property string $classification
+ * @property string $documentType
+ * @property string $destination
+ * @property string $genre
+ * @property string $storagePeriod
+ */
 class DescriptiveMetadata
 {
     public $title;

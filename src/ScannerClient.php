@@ -3,6 +3,8 @@
 
 namespace Lacuna\Scanner;
 
+use Psr\Http\Message\StreamInterface;
+
 /**
  * Class ScannerClient
  * @package Lacuna\Scanner
@@ -24,10 +26,10 @@ class ScannerClient implements ScannerServiceInterface
     // region Scan Sessions
 
     /**
-     * @param string $returnUrl
+     * @param $returnUrl
      * @param bool $multifile
-     * @param MetadataPresets $metadataPresets
-     * @param string $subscriptionId
+     * @param null $metadataPresets
+     * @param null $subscriptionId
      * @return CreateScanSessionResponse
      * @throws RestErrorException
      * @throws RestUnreachableException
@@ -51,7 +53,7 @@ class ScannerClient implements ScannerServiceInterface
     }
 
     /**
-     * @param string $scanSessionId
+     * @param $scanSessionId
      * @return ScanSession
      * @throws RestErrorException
      * @throws RestUnreachableException
@@ -69,7 +71,7 @@ class ScannerClient implements ScannerServiceInterface
     // region Documents
 
     /**
-     * @param string $documentId
+     * @param $documentId
      * @return Document
      * @throws RestErrorException
      * @throws RestUnreachableException
@@ -98,7 +100,7 @@ class ScannerClient implements ScannerServiceInterface
 
     /**
      * @param $documentId
-     * @return mixed
+     * @return StreamInterface
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
@@ -111,8 +113,8 @@ class ScannerClient implements ScannerServiceInterface
     }
 
     /**
-     * @param string $documentId
-     * @return mixed
+     * @param $documentId
+     * @return string
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
@@ -139,7 +141,7 @@ class ScannerClient implements ScannerServiceInterface
 
     /**
      * @param $documentId
-     * @return mixed
+     * @return StreamInterface
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException
@@ -153,7 +155,7 @@ class ScannerClient implements ScannerServiceInterface
 
     /**
      * @param $documentId
-     * @return false|string
+     * @return string
      * @throws RestErrorException
      * @throws RestUnreachableException
      * @throws ScannerException

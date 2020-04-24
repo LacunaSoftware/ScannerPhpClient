@@ -66,6 +66,9 @@ class HttpResponse
         return $this->_body;
     }
 
+    /**
+     * @return mixed
+     */
     public function getBodyAsJson()
     {
         return Util::decodeJson($this->body);
