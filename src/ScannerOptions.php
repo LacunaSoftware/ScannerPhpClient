@@ -6,6 +6,11 @@ namespace Lacuna\Scanner;
 /**
  * Class ScannerOptions
  * @package Lacuna\Scanner
+ *
+ * @property $endpoint
+ * @property $apiKey
+ * @property $usePhpCAInfo
+ * @property $caInfoPath
  */
 class ScannerOptions
 {
