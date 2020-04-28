@@ -3,7 +3,15 @@
 
 namespace Lacuna\Scanner;
 
-
+/**
+ * Class ScanSession
+ * @package Lacuna\Scanner
+ *
+ * @property string $id
+ * @property bool $multifile
+ * @property string $result
+ * @property array $documents
+ */
 class ScanSession
 {
     private $client;
@@ -14,13 +22,11 @@ class ScanSession
     public $documents;
 
     /**
-     * @internal
-     *
      * ScanSession constructor.
-     * @param AbstractScannerClient $client
+     * @param ScannerClient $client
      * @param $model
      */
-    function __construct(AbstractScannerClient $client, $model)
+    function __construct(ScannerClient $client, $model)
     {
         $this->client = $client;
         $this->id = $model->id;

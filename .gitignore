@@ -2,5 +2,4 @@
 vendor/
 scripts/
 composer.lock
-tests/bin/PkiUtil/LacunaPkiLicense.config
-tests/token.txt
+tests/config.json

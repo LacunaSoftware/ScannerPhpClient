@@ -4,14 +4,18 @@
 namespace Lacuna\Scanner;
 
 /**
- * Class AbstractScannerOptions
+ * Class ScannerOptions
  * @package Lacuna\Scanner
+ *
+ * @property $endpoint
+ * @property $apiKey
+ * @property $usePhpCAInfo
+ * @property $caInfoPath
  */
-abstract class AbstractScannerOptions
+class ScannerOptions
 {
     public $endpoint;
     public $apiKey;
     public $usePhpCAInfo;
     public $caInfoPath;
-//    public $timeout;
 }

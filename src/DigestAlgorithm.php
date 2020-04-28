@@ -8,6 +8,11 @@ use RuntimeException;
 /**
  * Class DigestAlgorithm
  * @package Lacuna\Scanner
+ *
+ * @property string $id
+ * @property string $phpId
+ * @property string $name
+ * @property string $hashId
  */
 class DigestAlgorithm
 {

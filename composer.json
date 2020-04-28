@@ -16,11 +16,16 @@
   ],
   "require": {
     "php": ">=5.5.0",
-    "guzzlehttp/guzzle": "^6.5.2"
+    "guzzlehttp/guzzle": "^6.5.2",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.1"
   },
   "autoload": {
     "psr-4": {
-      "Lacuna\\Scanner\\": "src/"
+      "Lacuna\\Scanner\\": "src/",
+      "Lacuna\\Scanner\\Tests\\": "tests/"
     }
   }
 }
