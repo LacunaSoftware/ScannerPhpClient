@@ -3,6 +3,8 @@
 namespace Lacuna\Scanner\Tests;
 
 
+use http\Exception\RuntimeException;
+
 class Config
 {
     private static $instance = null;
@@ -26,9 +28,19 @@ class Config
             if ($config == false) {
                 throw new \RuntimeException('The file \'config.json\' is not a valid JSON');
             }
+
             self::$instance = new Config();
-            self::$instance->endpoint = $config->endpoint;
+            if (isset($config->endpoint)) {
+                self::$instance->endpoint = $config->endpoint;
+            } else {
+                self::$instance->endpoint = 'https://scn.lacunasoftware.com';
+            }
+
+            if (empty($config->apiKey)) {
+                throw new \RuntimeException('The variable \'apiKey\' was not provided in \'config.json\' file');
+            }
             self::$instance->apiKey = $config->apiKey;
+
             self::$instance->openBrowser = $config->openBrowser;
             self::$instance->scanSessionIdCancelled = $config->scanSessionIdCancelled;
             self::$instance->scanSessionIdWithMultifile = $config->scanSessionIdWithMultifile;

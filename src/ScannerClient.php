@@ -122,7 +122,9 @@ class ScannerClient implements ScannerServiceInterface
     public function getDocumentContent($documentId)
     {
         $stream = $this->openReadDocument($documentId);
-        return $stream->getContents();
+        $content = $stream->getContents();
+        $stream->close();
+        return $content;
     }
 
     /**
@@ -163,7 +165,9 @@ class ScannerClient implements ScannerServiceInterface
     public function getDocumentMetadataFileContent($documentId)
     {
         $stream = $this->openReadDocumentMetadataFile($documentId);
-        return $stream->getContents();
+        $content = $stream->getContents();
+        $stream->close();
+        return $content;
     }
 
     // endregion
