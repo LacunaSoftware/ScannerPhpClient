@@ -2,7 +2,7 @@
 
 namespace Lacuna\Scanner\Tests;
 
-
+use Lacuna\Scanner\MetadataPresets;
 use Lacuna\Scanner\ScanSessionResults;
 use PHPUnit\Framework\TestCase;
 
@@ -187,5 +187,21 @@ class ScannerClientTest extends TestCase
             file_put_contents('C:\\Temp\\scanner-file-metadata.xml', $content);
         }
         self::expectNotToPerformAssertions();
+    }
+
+    public function testCreateScanSessionV2WithoutMultifile() {
+        $client = Util::getClient();
+        $multidataPresets = new MetadataPresets();
+        $multidataPresets->documentType = "Termo do danilo teste";
+        $multidataPresets->documentTypeIsReadonly = true;
+        $response = $client->createScanSessionV2("https://scn.lacunasoftware.com", false, true, true, "string", $multidataPresets, "Scan");
+
+        $endpoint = Config::getInstance()->endpoint;
+        self::assertMatchesRegularExpression('/^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/', $response->scanSessionId);
+        self::assertMatchesRegularExpression("#$endpoint/scan/.*#", $response->redirectUrl);
+
+        if (Config::getInstance()->openBrowser) {
+            Util::openBrowser($response->redirectUrl);
+        }
     }
 }
