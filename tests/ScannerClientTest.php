@@ -2,6 +2,7 @@
 
 namespace Lacuna\Scanner\Tests;
 
+use Lacuna\Scanner\InputType;
 use Lacuna\Scanner\MetadataPresets;
 use Lacuna\Scanner\ScanSessionResults;
 use PHPUnit\Framework\TestCase;
@@ -191,11 +192,28 @@ class ScannerClientTest extends TestCase
 
     public function testCreateScanSessionV2WithoutMultifile() {
         $client = Util::getClient();
-        $multidataPresets = new MetadataPresets();
-        $multidataPresets->documentType = "Termo do danilo teste";
-        $multidataPresets->documentTypeIsReadonly = true;
-        $response = $client->createScanSessionV2("https://scn.lacunasoftware.com", false, true, true, "string", $multidataPresets, "Scan");
-
+        $metadataPresets = new MetadataPresets();
+        $metadataPresets->documentType = "Termo do danilo teste";
+        $metadataPresets->documentTypeIsReadonly = true;
+        $response = $client->createScanSessionV2("https://scn.lacunasoftware.com", false, true, true, "string", $metadataPresets, InputType::Scan);
+        
+        $endpoint = Config::getInstance()->endpoint;
+        self::assertMatchesRegularExpression('/^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/', $response->scanSessionId);
+        self::assertMatchesRegularExpression("#$endpoint/scan/.*#", $response->redirectUrl);
+        
+        if (Config::getInstance()->openBrowser) {
+            Util::openBrowser($response->redirectUrl);
+        }
+    }
+    
+    public function testCreateScanSessionV2WithMultifile()
+    {
+        $client = Util::getClient();
+        $metadataPresets = new MetadataPresets();
+        $metadataPresets->documentType = "Termo do danilo teste";
+        $metadataPresets->documentTypeIsReadonly = true;
+        $response = $client->createScanSessionV2("https://scn.lacunasoftware.com", true, true, true, "string", $metadataPresets, InputType::FileUpload);
+        
         $endpoint = Config::getInstance()->endpoint;
         self::assertMatchesRegularExpression('/^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/', $response->scanSessionId);
         self::assertMatchesRegularExpression("#$endpoint/scan/.*#", $response->redirectUrl);
@@ -203,5 +221,20 @@ class ScannerClientTest extends TestCase
         if (Config::getInstance()->openBrowser) {
             Util::openBrowser($response->redirectUrl);
         }
+    }
+
+    public function testGetScanSessionV2NotCompleted()
+    {
+        $multifile = false;
+        $client = Util::getClient();
+        $metadataPresets = new MetadataPresets();
+        $metadataPresets->documentType = "Termo do danilo teste";
+        $metadataPresets->documentTypeIsReadonly = true;
+        $createResponse = $client->createScanSessionV2("https://scn.lacunasoftware.com", false, true, true, "string", $metadataPresets, InputType::FileUpload);
+        $session = $client->getScanSession($createResponse->scanSessionId);
+        self::assertTrue($session->id == $createResponse->scanSessionId);
+        self::assertTrue($session->multifile == $multifile);
+        self::assertNull($session->result);
+        self::assertEmpty($session->documents);
     }
 }
