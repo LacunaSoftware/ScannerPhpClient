@@ -53,6 +53,46 @@ class ScannerClient implements ScannerServiceInterface
     }
 
     /**
+     * @param null $returnUrl
+     * @param bool $multifile
+     * @param bool metadataInputEnabled
+     * @param bool $signatureEnabled
+     * @param string $accessLinkFormat
+     * @param null $metadataPresets
+     * @param string $inputType
+     * @return CreateScanSessionResponse
+     * @throws RestErrorException
+     * @throws RestUnreachableException
+     * @throws ScannerException
+     */
+    public function createScanSessionV2(
+        $returnUrl = null, 
+        $multifile = false, 
+        $metadataInputEnabled = false,
+        $signatureEnabled = false,
+        $accessLinkFormat,
+        $metadataPresets = null,
+        $inputType
+        )
+    {
+        $request = [
+            'returnUrl' => $returnUrl,
+            'multifile' => $multifile,
+            'metadataInputEnabled' => $metadataInputEnabled,
+            'signatureEnabled' => $signatureEnabled,
+            'accessLinkFormat' => $accessLinkFormat,
+            'metadataPresets' => $metadataPresets,
+            'inputType' => $inputType
+
+        ];
+        $customHeaders = [];
+        $client = $this->_getRestClient($customHeaders);
+
+        $response = $client->post('/api/v2/scan-sessions', $request);
+        return new CreateScanSessionResponse($response->getBodyAsJson());
+    }
+
+    /**
      * @param $scanSessionId
      * @return ScanSession
      * @throws RestErrorException
