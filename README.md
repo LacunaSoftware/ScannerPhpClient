@@ -7,5 +7,5 @@ This library contains classes that encapsulate the calls to the Scanner API.
 The recommended way to install **Scanner Client lib** is through [Composer](http://getcomposer.org):
 
     "require": {
-        "lacuna/scanner-client" : "^1.0.0"
+        "lacuna/scanner-client" : "^1.0.1"
     }
